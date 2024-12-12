@@ -6,8 +6,13 @@ on:
   pull_request:
     branches: [ master ]
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,44 +21,37 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.x'
+        flutter-version: '3.16.5'
         channel: 'stable'
+        cache: true
     
     - name: Install dependencies
       run: flutter pub get
+    
+    - name: Verify formatting
+      run: dart format --output=none --set-exit-if-changed .
     
     - name: Analyze project source
       run: flutter analyze
     
     - name: Run tests
-      run: flutter test
+      run: flutter test --coverage
     
     - name: Build web
-      run: flutter build web
+      run: |
+        flutter config --enable-web
+        flutter build web --release --base-href "/PolyglotteTranslate/"
     
-    - name: Check formatting
-      run: dart format --set-exit-if-changed .
-    
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: web-build
-        path: build/web/
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-
-    steps:
-    - name: Download build artifacts
-      uses: actions/download-artifact@v3
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v2
       with:
-        name: web-build
-        path: build/web/
+        path: build/web
     
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
+      id: deployment
+      uses: actions/deploy-pages@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: build/web/
+        token: ${{ secrets.GITHUB_TOKEN }}
