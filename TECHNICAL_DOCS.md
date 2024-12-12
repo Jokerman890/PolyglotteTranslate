@@ -1,202 +1,188 @@
 # Technische Dokumentation 📚
 
-## Projektübersicht 🎯
+## Best Practices & Code-Qualität 🎯
 
-Polyglotte Translate ist eine Full-Stack-Mobile-App für Textübersetzungen, die Flutter (Dart) für das Frontend und ein Dart-basiertes Backend verwendet.
-
-## Architektur 🏗️
-
-### Frontend-Architektur
-
+### Projektstruktur
 ```
 lib/
 ├── core/                    # Kern-Funktionalitäten
 │   ├── config/             # Konfigurationen
-│   │   └── app_config.dart # App-Einstellungen
 │   ├── database/           # Lokale Datenbank
-│   │   └── database_helper.dart # SQLite-Integration
 │   ├── providers/          # State Management
-│   │   ├── connectivity_provider.dart # Online/Offline-Status
-│   │   └── online_status_provider.dart # Synchronisations-Status
-│   ├── theme/             
-│   │   └── app_theme.dart  # Design-System
-│   └── widgets/            # Wiederverwendbare Widgets
-│       ├── animated_icon_button.dart
-│       ├── animated_translate_button.dart
-│       └── glow_container.dart
-├── features/               # Feature-Module
-│   ├── auth/              # Authentifizierung
-│   │   └── presentation/
-│   └── translation/       # Übersetzungsfunktionen
-│       ├── presentation/
-│       ├── providers/
-│       ├── repositories/
-│       └── services/
-└── main.dart              # App-Entry-Point
+│   ├── theme/             # Design-System
+│   └── widgets/           # Wiederverwendbare Widgets
+└── features/              # Feature-Module
+    ├── auth/             # Authentifizierung
+    └── translation/      # Übersetzungsfunktionen
+        ├── presentation/
+        ├── repositories/
+        └── services/
 ```
 
-## Offline-Funktionalität 🔄
+### Implementierte Best Practices
 
-### Connectivity Management
+#### 1. State Management
+- ✅ Riverpod für dependency injection
+- ✅ Provider-spezifische Fehlerbehandlung
+- ✅ Getrennte Provider für verschiedene Zustandstypen
+- ✅ Effiziente Provider-Abhängigkeiten
 
+#### 2. Architektur
+- ✅ Feature-first Struktur
+- ✅ Clean Architecture Prinzipien
+- ✅ Repository Pattern
+- ✅ Service Layer Abstraktion
+
+#### 3. Error Handling
+- ✅ Globales Error Widget
+- ✅ Spezifische Fehlerbehandlung pro Feature
+- ✅ Benutzerfreundliche Fehlermeldungen
+- ✅ Offline-Fehlerbehandlung
+
+#### 4. Offline-Funktionalität
+- ✅ SQLite Integration
+- ✅ Offline Queue
+- ✅ Automatische Synchronisation
+- ✅ Status-Indikatoren
+
+#### 5. UI/UX
+- ✅ Konsistentes Theming
+- ✅ Responsive Design
+- ✅ Animierte Komponenten
+- ✅ Barrierefreiheit-Grundlagen
+
+### Code-Konventionen
+
+#### Namenskonventionen
 ```dart
-// Online-Status Provider
+// Klassen: PascalCase
+class TranslationRepository {}
+
+// Variablen & Methoden: camelCase
+final translationService = ref.watch(translationServiceProvider);
+
+// Konstanten: kPascalCase
+const kMaxRetryAttempts = 3;
+```
+
+#### Provider-Konventionen
+```dart
+// Feature-spezifische Provider
+final translationRepositoryProvider = Provider<TranslationRepository>((ref) {
+  return TranslationRepository(ref);
+});
+
+// Status Provider
 final connectivityStatusProvider = StateNotifierProvider<ConnectivityNotifier, bool>
+```
 
-// Synchronisations-Status
-enum SyncStatus {
-  idle,
-  syncing,
-  error
+#### Error Handling
+```dart
+// Spezifische Fehlertypen
+class TranslationException implements Exception {
+  final String message;
+  final String? code;
+  
+  TranslationException(this.message, {this.code});
+}
+
+// Fehlerbehandlung
+try {
+  await repository.translateText();
+} on TranslationException catch (e) {
+  // Feature-spezifische Behandlung
+} catch (e) {
+  // Allgemeine Fehlerbehandlung
 }
 ```
 
-### Datenfluss
-1. Online → Offline
-   - Aktionen werden in der Offline-Queue gespeichert
-   - Übersetzungen werden im lokalen Cache gespeichert
-   - UI zeigt Offline-Status an
+### Performance-Optimierungen
 
-2. Offline → Online
-   - Automatische Erkennung der Verbindung
-   - Synchronisation der Offline-Queue
-   - Aktualisierung des UI-Status
+#### 1. Widget-Optimierungen
+- Verwendung von const Konstruktoren
+- Minimierung von Widget-Rebuilds
+- Effiziente Listendarstellung
+- Lazy Loading
 
-### Datenbank-Schema 💾
+#### 2. Datenbank-Optimierungen
+- Indexierung wichtiger Felder
+- Batch-Operationen
+- Caching-Strategien
+- Effiziente Queries
 
-#### Translations Tabelle
-```sql
-CREATE TABLE translations(
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  sourceText TEXT NOT NULL,
-  targetText TEXT NOT NULL,
-  sourceLanguage TEXT NOT NULL,
-  targetLanguage TEXT NOT NULL,
-  timestamp INTEGER NOT NULL,
-  isFavorite INTEGER DEFAULT 0,
-  isSync INTEGER DEFAULT 0
-)
-```
+#### 3. State Management
+- Granulare Provider
+- Selektive Rebuilds
+- Effiziente Abhängigkeiten
+- Zustandsbereinigung
 
-#### Offline Queue Tabelle
-```sql
-CREATE TABLE offline_queue(
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  action TEXT NOT NULL,
-  data TEXT NOT NULL,
-  timestamp INTEGER NOT NULL,
-  retryCount INTEGER DEFAULT 0
-)
-```
+### Testing-Strategie
 
-#### Translation Cache Tabelle
-```sql
-CREATE TABLE translation_cache(
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  sourceText TEXT NOT NULL,
-  targetText TEXT NOT NULL,
-  sourceLanguage TEXT NOT NULL,
-  targetLanguage TEXT NOT NULL,
-  timestamp INTEGER NOT NULL,
-  UNIQUE(sourceText, sourceLanguage, targetLanguage)
-)
-```
-
-### Repository Pattern
-
+#### Unit Tests
 ```dart
-class TranslationRepository {
-  // Online/Offline-Handling
-  Future<String> translateText({
-    required String text,
-    required String fromLanguage,
-    required String toLanguage,
+void main() {
+  group('TranslationRepository', () {
+    test('übersetzt Text erfolgreich', () async {
+      // Arrange
+      // Act
+      // Assert
+    });
   });
-
-  // Offline-Synchronisation
-  Future<void> syncOfflineData();
 }
 ```
 
-## State Management 🔄
-
-### Provider-Hierarchie
-
+#### Widget Tests
 ```dart
-// Connectivity
-connectivityServiceProvider → connectivityStatusProvider → onlineStatusListenerProvider
-
-// Synchronisation
-syncStatusProvider → syncMessageProvider
+testWidgets('zeigt Übersetzung an', (tester) async {
+  // Build
+  await tester.pumpWidget(const MyApp());
+  
+  // Interact
+  await tester.tap(find.byType(TranslateButton));
+  
+  // Verify
+  expect(find.text('Übersetzung'), findsOneWidget);
+});
 ```
 
-### Daten-Flow
+### Bekannte Probleme & Lösungen
 
-1. UI-Layer
-   - Beobachtet Status-Provider
-   - Zeigt entsprechende Meldungen
-   - Passt Verhalten an Online-Status an
+1. Build-Verzeichnis Berechtigungen
+   - Problem: Zugriffsverweigerung
+   - Lösung: Administratorrechte oder Projektpfad ändern
 
-2. Repository-Layer
-   - Verwaltet Offline-Queue
-   - Handhabt Synchronisation
-   - Cached Übersetzungen
+2. Offline-Synchronisation
+   - Problem: Konfliktbehandlung
+   - Lösung: Timestamp-basierte Konfliktlösung
 
-3. Service-Layer
-   - Kommuniziert mit APIs
-   - Handhabt Netzwerk-Fehler
-   - Implementiert Retry-Logik
+### Nächste Schritte
 
-## Performance-Optimierungen ⚡
+1. Testing
+   - [ ] Unit Tests für Services
+   - [ ] Widget Tests für UI
+   - [ ] Integration Tests
 
-### Caching-Strategien
-- Lokales Caching von Übersetzungen
-- Intelligente Cache-Invalidierung
-- Batch-Operationen für Synchronisation
+2. Performance
+   - [ ] Profiling durchführen
+   - [ ] Memory Leaks identifizieren
+   - [ ] Optimierungen implementieren
 
-### Offline-Performance
-- Effiziente SQLite-Queries
-- Minimierte Schreiboperationen
-- Optimierte Queue-Verwaltung
+3. Features
+   - [ ] Lokalisierung
+   - [ ] Barrierefreiheit
+   - [ ] Analytics
 
-## Sicherheit 🔒
-
-### Daten-Sicherheit
-- Verschlüsselte Speicherung
-- Sichere Queue-Verwaltung
-- Validierung aller Daten
-
-### Fehlerbehandlung
-- Graceful Degradation
-- Retry-Mechanismen
-- Benutzerbenachrichtigungen
-
-## Testing-Strategie 🧪
-
-### Unit Tests
-- Provider Tests
-- Repository Tests
-- Service Tests
-
-### Integration Tests
-- Offline → Online Synchronisation
-- Datenbank-Migration
-- Cache-Verhalten
-
-## Nächste Schritte 📈
-
-1. Implementierung der Auth-Integration
-2. Erweiterung der Offline-Funktionalität
-3. Performance-Optimierungen
-4. UI/UX-Verbesserungen
-
-## Ressourcen 📚
-
-- [Flutter Dokumentation](https://flutter.dev/docs)
-- [SQLite Dokumentation](https://www.sqlite.org/docs.html)
-- [Riverpod Guide](https://riverpod.dev/docs)
-- [Connectivity Plus Package](https://pub.dev/packages/connectivity_plus)
+4. Dokumentation
+   - [ ] API-Dokumentation
+   - [ ] Entwickler-Guide
+   - [ ] Release Notes
 
 ---
+
+## Ressourcen & Links
+
+- [Flutter Docs](https://flutter.dev/docs)
+- [Riverpod Docs](https://riverpod.dev)
+- [SQLite in Flutter](https://flutter.dev/docs/cookbook/persistence/sqlite)
 
 Letzte Aktualisierung: Januar 2024
