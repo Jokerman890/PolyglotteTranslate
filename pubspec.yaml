@@ -1,0 +1,80 @@
+name: polyglotte_translate
+description: Eine moderne Full-Stack-Übersetzungs-App entwickelt mit Flutter.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  
+  # State Management
+  flutter_riverpod: ^2.4.9
+  riverpod_annotation: ^2.3.3
+
+  # Netzwerk und API
+  dio: ^5.4.0
+  connectivity_plus: ^5.0.2
+
+  # Lokale Datenspeicherung
+  sqflite: ^2.3.0
+  shared_preferences: ^2.2.2
+  path_provider: ^2.1.1
+
+  # Auth & Backend
+  supabase_flutter: ^2.0.2
+
+  # UI Komponenten
+  flutter_svg: ^2.0.9
+  cached_network_image: ^3.3.0
+  shimmer: ^3.0.0
+  flutter_markdown: ^0.6.18
+
+  # Utilities
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
+  intl: ^0.18.1
+  logger: ^2.0.2+1
+  url_launcher: ^6.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+
+  # Linting und Analyse
+  flutter_lints: ^3.0.1
+  custom_lint: ^0.5.7
+  riverpod_lint: ^2.3.7
+
+  # Code Generation
+  build_runner: ^2.4.7
+  freezed: ^2.4.5
+  json_serializable: ^6.7.1
+  riverpod_generator: ^2.3.9
+
+  # Testing
+  mocktail: ^1.0.2
+  golden_toolkit: ^0.15.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/translations/
+
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700
