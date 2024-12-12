@@ -11,7 +11,16 @@ Alle wichtigen Änderungen am Polyglotte Translate Projekt werden in dieser Date
 
 ### In Arbeit 🔄
 - Integration der Authentifizierung
-- Einrichtung der CI/CD-Pipeline
+- Erweiterung der Test-Abdeckung
+
+## [0.0.8] - 2024-01-XX 👷
+
+### CI/CD
+- GitHub Actions Workflow eingerichtet
+- Automatisierte Tests und Code-Analyse
+- Automatisches Web-Deployment
+- Format-Prüfung
+- Build-Artefakte-Upload
 
 ## [0.0.7] - 2024-01-XX 🔌
 
