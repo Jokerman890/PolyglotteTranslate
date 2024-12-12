@@ -6,14 +6,31 @@ Alle wichtigen Änderungen am Polyglotte Translate Projekt werden in dieser Date
 
 ### Hinzugefügt ✨
 - Implementierung der Mistral AI API für präzise Übersetzungen
-- Offline-Modus mit SQLite-Caching
 - Benutzerverwaltung mit Supabase Auth
 - Synchronisation von Nutzerdaten (Favoriten, Verlauf)
 
 ### In Arbeit 🔄
-- Implementierung der Offline-Funktionalität
 - Integration der Authentifizierung
 - Einrichtung der CI/CD-Pipeline
+
+## [0.0.7] - 2024-01-XX 🔌
+
+### Offline-Funktionalität
+- Implementierung des ConnectivityProvider für Online/Offline-Status
+- Automatische Erkennung des Netzwerkstatus
+- Benachrichtigungen über Offline-Modus
+- Status-Management mit Riverpod
+
+## [0.0.6] - 2024-01-XX 💾
+
+### Datenbank & Offline-Funktionalität
+- SQLite-Integration für lokale Datenspeicherung
+- TranslationRepository für Datenzugriff
+- Implementierung des Translation-Cache
+- Offline-Queue für ausstehende Aktionen
+- CRUD-Operationen für Übersetzungen
+- Favoriten-System
+- Übersetzungsverlauf
 
 ## [0.0.5] - 2024-01-XX 🎉
 
