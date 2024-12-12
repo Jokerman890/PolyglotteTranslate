@@ -1,122 +1,118 @@
-# Polyglotte Translate
+# 🌐 Polyglotte Translate
 
-Eine moderne Full-Stack-Übersetzungs-App entwickelt mit Flutter.
+Eine moderne Full-Stack-Mobile-App für Textübersetzungen mit fortschrittlichen Funktionen und elegantem Design.
 
-## Projektübersicht
+## ✨ Features
 
-Polyglotte Translate ist eine leistungsstarke Übersetzungs-App, die Funktionen wie Echtzeit-Übersetzung, Offline-Unterstützung und Benutzerverwaltung bietet.
+- 🔄 Echtzeitübersetzung mit Mistral AI
+- 🌈 Modernes UI mit animierten Elementen
+- 🌍 Unterstützung für multiple Sprachen
+- 💾 Offline-Modus mit SQLite-Caching
+- 🔐 Sichere Authentifizierung
+- 🔄 Synchronisation von Nutzerdaten
+- ⚡ Optimierte Performance
 
-### Technologie-Stack
+## 🚀 Technologie-Stack
 
-- **Frontend**: Flutter/Dart
-- **Backend**: Dart (Shelf/Supabase Edge Functions)
-- **Übersetzungs-API**: Mistral AI
-- **Datenbank**: SQLite (lokal), Supabase (Cloud)
-- **State Management**: Riverpod
-- **Code Generation**: Freezed
-- **Authentication**: Supabase Auth
+### Frontend
+- 🎯 Flutter (Dart)
+- 🎨 Custom Widgets & Animationen
+- 📱 Responsive Design
+- ♿ Barrierefreiheit
 
-### Projektstruktur
+### Backend
+- 🔧 Dart-basiertes Backend
+- 🔌 Mistral AI API Integration
+- 🗄️ SQLite Datenbank
+- 🔒 Supabase Auth
+
+## 📋 Projektstruktur
 
 ```
 lib/
-├── core/
-│   ├── constants/           # App-weite Konstanten
-│   ├── errors/             # Fehlerbehandlung
-│   ├── theme/              # App-Theme
-│   └── utils/              # Hilfsfunktionen
-├── features/
-│   ├── auth/               # Authentifizierung
-│   ├── translation/        # Übersetzungsfunktionalität
-│   ├── favorites/          # Favoritenverwaltung
-│   └── settings/           # App-Einstellungen
-├── models/                 # Datenmodelle
-├── repositories/           # Datenzugriffsschicht
-├── services/              # Geschäftslogik
-└── widgets/               # Wiederverwendbare Widgets
-
-test/
-├── unit/                  # Unit-Tests
-├── widget/               # Widget-Tests
-└── integration/          # Integrationstests
+├── core/                 # Kern-Funktionalitäten
+│   ├── config/          # Konfigurationen
+│   ├── theme/           # Design-System
+│   └── widgets/         # Wiederverwendbare Widgets
+├── features/            # Feature-Module
+│   ├── auth/           # Authentifizierung
+│   └── translation/    # Übersetzungsfunktionen
+└── main.dart           # App-Entry-Point
 ```
 
-### Hauptfunktionen
+## 🛠️ Installation
 
-- Echtzeit-Textübersetzung
-- Offline-Unterstützung
-- Spracherkennung
-- Benutzerkonten und Synchronisation
-- Übersetzungsverlauf
-- Favoriten-Management
-- Dark/Light Mode
+1. **Flutter installieren**
+```bash
+git clone https://github.com/flutter/flutter.git
+```
 
-### Technische Anforderungen
+2. **Projekt klonen**
+```bash
+git clone https://github.com/yourusername/polyglotte_translate.git
+cd polyglotte_translate
+```
 
-- Flutter SDK
-- Android Studio / Xcode
-- VSCode mit Flutter/Dart Extensions
-- Git
+3. **Abhängigkeiten installieren**
+```bash
+flutter pub get
+```
 
-### Entwicklungsrichtlinien
+4. **App starten**
+```bash
+flutter run
+```
 
-1. **Code-Stil**
-   - Verwendung von `flutter_lints`
-   - Strikte Typisierung (kein `dynamic` oder `var`)
-   - Dokumentation aller öffentlichen APIs
+## 🔧 Konfiguration
 
-2. **Architektur**
-   - MVVM-Architektur
-   - Dependency Injection mit Riverpod
-   - Repository Pattern für Datenzugriff
+1. `.env` Datei erstellen:
+```env
+MISTRAL_API_KEY=your_api_key
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_anon_key
+```
 
-3. **Testing**
-   - Mindestens 80% Testabdeckung
-   - Unit-Tests für alle Services/Repositories
-   - Widget-Tests für UI-Komponenten
-   - Integration-Tests für kritische Flows
+## 🧪 Tests
 
-4. **Performance**
-   - Lazy Loading für Listen
-   - Effizientes Caching
-   - Optimierte Asset-Verwaltung
+```bash
+flutter test
+```
 
-### Sicherheit
+## 📱 Screenshots
 
-- Sichere API-Schlüssel-Verwaltung
-- Verschlüsselte lokale Datenspeicherung
-- Sicheres Session-Management
-- HTTPS-Kommunikation
+[Screenshots der App werden hier eingefügt]
 
-### CI/CD
+## 🤝 Beitragen
 
-- Automatisierte Tests
-- Code-Qualitätsprüfung
-- Build-Automatisierung
-- Versionierung nach Semantic Versioning
+1. Fork erstellen
+2. Feature Branch erstellen (`git checkout -b feature/AmazingFeature`)
+3. Änderungen committen (`git commit -m 'Add some AmazingFeature'`)
+4. Push zum Branch (`git push origin feature/AmazingFeature`)
+5. Pull Request öffnen
 
-## Installation
+## 📄 Lizenz
 
-1. Flutter SDK installieren
-2. Repository klonen
-3. Abhängigkeiten installieren:
-   ```bash
-   flutter pub get
-   ```
-4. Umgebungsvariablen konfigurieren
-5. App starten:
-   ```bash
-   flutter run
-   ```
+Dieses Projekt ist unter der MIT-Lizenz lizenziert - siehe [LICENSE](LICENSE) Datei für Details.
 
-## Entwicklung
+## 👥 Team
 
-1. Feature-Branch erstellen
-2. Code entwickeln und testen
-3. Pull Request erstellen
-4. Code Review
-5. Merge nach erfolgreichem Review
+- Frontend-Entwicklung: [Name]
+- Backend-Entwicklung: [Name]
+- UI/UX Design: [Name]
 
-## Lizenz
+## 📞 Support
 
-MIT License
+Bei Fragen oder Problemen:
+- 📧 Email: support@polyglotte.com
+- 💬 Discord: [Link zum Discord-Server]
+- 📝 Issues: [GitHub Issues](https://github.com/yourusername/polyglotte_translate/issues)
+
+## 🙏 Danksagungen
+
+- Mistral AI für die Übersetzungs-API
+- Flutter-Team für das großartige Framework
+- Alle Mitwirkenden und Unterstützer
+
+---
+
+Made with ❤️ in Deutschland
