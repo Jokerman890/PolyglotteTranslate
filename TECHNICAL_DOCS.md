@@ -1,5 +1,99 @@
 # Technische Dokumentation 📚
 
+## CI/CD Pipeline 🚀
+
+### GitHub Actions Workflow
+
+```yaml
+name: Flutter CI/CD
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.16.5'
+        channel: 'stable'
+        cache: true
+    
+    - name: Install dependencies
+      run: flutter pub get
+    
+    - name: Verify formatting
+      run: dart format --output=none --set-exit-if-changed .
+    
+    - name: Analyze project source
+      run: flutter analyze
+    
+    - name: Run tests
+      run: flutter test --coverage
+    
+    - name: Build web
+      run: |
+        flutter config --enable-web
+        flutter build web --release --base-href "/PolyglotteTranslate/"
+    
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v2
+      with:
+        path: build/web
+    
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+```
+
+### Automatisierte Prozesse
+
+#### 1. Code-Qualität
+- ✅ Dart Format Überprüfung
+- 🔍 Statische Code-Analyse
+- 🧪 Automatisierte Tests
+- 📊 Test-Coverage Bericht
+
+#### 2. Build-Prozess
+- 🏗️ Web-Build für GitHub Pages
+- 📦 Artifact-Erstellung
+- 🔒 Sichere Token-Verwaltung
+
+#### 3. Deployment
+- 🚀 Automatisches Deployment auf GitHub Pages
+- 🌐 Konfigurierte Base-URL
+- 📝 Deployment-Logs
+
+### Workflow-Status
+
+Der aktuelle Workflow durchläuft folgende Schritte:
+1. Code-Checkout
+2. Flutter-Setup (Version 3.16.5)
+3. Dependency Installation
+4. Code-Formatierung
+5. Code-Analyse
+6. Test-Ausführung
+7. Web-Build
+8. Deployment
+
 ## Best Practices & Code-Qualität 🎯
 
 ### Projektstruktur
@@ -99,16 +193,16 @@ try {
 ### Performance-Optimierungen
 
 #### 1. Widget-Optimierungen
-- Verwendung von const Konstruktoren
+- Verwendung von `const` Widgets
 - Minimierung von Widget-Rebuilds
 - Effiziente Listendarstellung
 - Lazy Loading
 
 #### 2. Datenbank-Optimierungen
-- Indexierung wichtiger Felder
+- Indizierung wichtiger Felder
+- Prepared Statements
 - Batch-Operationen
-- Caching-Strategien
-- Effiziente Queries
+- Connection Pooling
 
 #### 3. State Management
 - Granulare Provider
@@ -151,26 +245,26 @@ testWidgets('zeigt Übersetzung an', (tester) async {
    - Problem: Zugriffsverweigerung
    - Lösung: Administratorrechte oder Projektpfad ändern
 
-2. Offline-Synchronisation
-   - Problem: Konfliktbehandlung
-   - Lösung: Timestamp-basierte Konfliktlösung
+2. GitHub Actions
+   - Problem: Deployment-Berechtigungen
+   - Lösung: Token-Konfiguration
 
 ### Nächste Schritte
 
-1. Testing
-   - [ ] Unit Tests für Services
-   - [ ] Widget Tests für UI
-   - [ ] Integration Tests
+1. Authentifizierung
+   - [ ] Supabase Integration
+   - [ ] OAuth Provider
+   - [ ] Profil-Management
 
-2. Performance
-   - [ ] Profiling durchführen
-   - [ ] Memory Leaks identifizieren
-   - [ ] Optimierungen implementieren
+2. Features
+   - [ ] Offline-Modus erweitern
+   - [ ] Mehr Sprachen
+   - [ ] Spracherkennung
 
-3. Features
-   - [ ] Lokalisierung
-   - [ ] Barrierefreiheit
-   - [ ] Analytics
+3. Tests
+   - [ ] E2E Tests
+   - [ ] Performance Tests
+   - [ ] Sicherheits-Audit
 
 4. Dokumentation
    - [ ] API-Dokumentation
@@ -182,7 +276,9 @@ testWidgets('zeigt Übersetzung an', (tester) async {
 ## Ressourcen & Links
 
 - [Flutter Docs](https://flutter.dev/docs)
-- [Riverpod Docs](https://riverpod.dev)
+- [GitHub Actions](https://docs.github.com/en/actions)
 - [SQLite in Flutter](https://flutter.dev/docs/cookbook/persistence/sqlite)
+- [Riverpod Docs](https://riverpod.dev)
+- [Connectivity Plus Package](https://pub.dev/packages/connectivity_plus)
 
 Letzte Aktualisierung: Januar 2024
